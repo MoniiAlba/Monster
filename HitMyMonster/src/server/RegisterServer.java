@@ -18,12 +18,13 @@ import java.util.logging.Logger;
  * @author soeur
  */
 public class RegisterServer implements Register{
-    private int contUsers = 0;
+    private static int contUsers = 0;
     private User[] players = new User [20];
+    private static int totalRounds = 5;
         
     @Override
     public String[] register(String nickname)  throws RemoteException {
-        String [] result = new String[4];  //regresamos ip, multicast socket, puerto tcp e id
+        String [] result = new String[5];  //regresamos ip, multicast socket, puerto tcp e id
         boolean userFound = false;
         int i = 0;
         while(!userFound && i < contUsers){
@@ -38,15 +39,16 @@ public class RegisterServer implements Register{
         if(!userFound){
             User newPlayer = new User(100+contUsers, nickname, 0);
             players[contUsers] = newPlayer;
-            result[3] = ""+100+contUsers;
+            result[3] = ""+contUsers;
             System.out.println("User " + players[contUsers].getNickname() + " registered with id: " + players[contUsers].getId());
             contUsers++;
             
         }
         
         result[0] = "228.15.26.37";  //direccion de grupo multicast
-        result[1] = "6789";         //socket multicast
+        result[1] = "7777";         //socket multicast
         result[2] = "7896";         //puerto tcp
+        result[4] = ""+totalRounds;
         return result;
     }
     
@@ -54,6 +56,7 @@ public class RegisterServer implements Register{
     
     @Override
     public void printPlayers() throws RemoteException {
+        System.out.println("============== Active Players ==============");
         for(int i = 0; i < contUsers; i++){
             System.out.println("Player: " + players[i].getNickname() + " Id: " + players[i].getId() + " Score: " + players[i].getScore());
         }
@@ -74,6 +77,21 @@ public class RegisterServer implements Register{
             
             Registry registry = LocateRegistry.getRegistry();
             registry.rebind(name, stub); 
+            System.out.println("Ready to register players");
+            
+            Thread sendMonsters = new Thread(new DisplaysMonsters(totalRounds));
+            boolean playerFlag = true;
+            int i = 0;
+            while(playerFlag){
+                System.out.println("counter: "+contUsers);
+                if(contUsers != 0){
+                    System.out.println("SALTEEEE");
+                    playerFlag = false;
+                }
+                i++;
+            }
+            System.out.println("I will send!");
+            sendMonsters.start();
         }catch(RemoteException ex){
             Logger.getLogger(RegisterServer.class.getName()).log(Level.SEVERE, null, ex);
         }
