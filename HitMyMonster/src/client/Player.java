@@ -25,6 +25,63 @@ import java.util.logging.Logger;
  */
 public class Player {
    
+    private int id;
+    private String nick;
+    private boolean stillPlaying;
+
+    public Player(int id, String nick, boolean stillPlaying) {
+        this.id = id;
+        this.nick = nick;
+        this.stillPlaying = stillPlaying;
+    }
+    
+    public Player(String nick) {
+        this.nick = nick;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNick() {
+        return nick;
+    }
+    
+    public boolean getStillPlaying(){
+        return stillPlaying;
+    }
+
+    public void whack(String number){
+        
+    }
+    
+    public void connectRMI(){
+        try {
+            System.setProperty("java.security.policy","file:/C:\\Users\\soeur\\Documents\\NetBeansProjects\\HitMyMonster\\src\\client\\player.policy");
+            if (System.getSecurityManager() == null) {
+                System.setSecurityManager(new SecurityManager());
+            }
+            
+            String name = "Register";
+            Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address
+            Register server = (Register) registry.lookup(name);
+            
+            String [] data = server.register(nick);
+            
+            System.out.println("Multicast group: "+data[0]);
+            System.out.println("Multicast socket: "+data[1]);
+            System.out.println("TCP port: "+data[2]);
+            System.out.println("My ID: "+data[3]);
+            System.out.println("Total of rounds: "+data[4]);            
+            id = Integer.getInteger(data[3]);
+            server.printPlayers();
+        }catch (RemoteException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 
     public static void main(String[] args) {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
@@ -33,7 +90,8 @@ public class Player {
         String s = reader.next();
         reader.close();
         System.out.println("==================================");
-        System.out.println(s);
+        
+        
         
         try {
             System.setProperty("java.security.policy","file:/C:\\Users\\soeur\\Documents\\NetBeansProjects\\HitMyMonster\\src\\client\\player.policy");
@@ -46,6 +104,8 @@ public class Player {
             Register server = (Register) registry.lookup(name);
             
             String [] data = server.register(s);
+            Player player = new Player(Integer.parseInt(data[3]), s, true);
+            
             System.out.println("Multicast group: "+data[0]);
             System.out.println("Multicast socket: "+data[1]);
             System.out.println("TCP port: "+data[2]);

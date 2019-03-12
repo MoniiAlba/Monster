@@ -17,12 +17,21 @@ import java.util.logging.Logger;
  *
  * @author soeur
  */
-public class RegisterServer implements Register{
+public class RegisterServer implements Register, Runnable{
+    
     private static int contUsers = 0;
     private User[] players = new User [20];
     private static int totalRounds = 5;
     private static String multicastGroup = "228.15.26.37";
     private static int multicastSocket = 7777;
+    private static int tcpSocket = 8896;
+    
+    
+   
+    @Override
+    public int getCounter() throws RemoteException {
+        return contUsers;
+    }
         
     @Override
     public String[] register(String nickname)  throws RemoteException {
@@ -49,7 +58,7 @@ public class RegisterServer implements Register{
         
         result[0] = multicastGroup;  //direccion de grupo multicast
         result[1] = multicastSocket + "";         //socket multicast
-        result[2] = "8896";         //puerto tcp
+        result[2] = tcpSocket + "";         //puerto tcp
         result[4] = ""+totalRounds;
         
         System.out.println("Usuarios en register: "+contUsers);
@@ -66,13 +75,15 @@ public class RegisterServer implements Register{
         }
     }
     
-    
-    public static void main(String[] args) {
+    @Override
+    public void run() {
         try{
-            System.setProperty("java.security.policy","file:/C:\\Users\\soeur\\Documents\\NetBeansProjects\\HitMyMonster\\src\\server\\server.policy");
+            String path = System.getProperty("user.dir") + "/src/server/server.policy";
+            System.setProperty("java.security.policy","file:"+path);
             if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
             } 
+            
             LocateRegistry.createRegistry(1099);
             
             String name = "Register";
@@ -83,28 +94,16 @@ public class RegisterServer implements Register{
             registry.rebind(name, stub); 
             System.out.println("Ready to register players");
             
-            Thread sendMonsters = new Thread(new DisplaysMonsters(totalRounds, multicastGroup, multicastSocket));
-            boolean playerFlag = true;
-            int i = 0;
-            while(playerFlag){
-                //System.out.println("counter: "+contUsers);
-                System.out.println();
-                if(contUsers != 0){
-                    System.out.println("SALTEEEE");
-                    playerFlag = false;
-                }
-                i++;
-            }
-            System.out.println("I will listen!");
-            Thread listenHits = new Thread(new HitCatcher());
-            listenHits.start();
-            System.out.println("I will send!");
-            sendMonsters.start();
+            
             
         }catch(RemoteException ex){
             Logger.getLogger(RegisterServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
+
+    
+
+    
 
     
 }

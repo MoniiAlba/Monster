@@ -18,6 +18,5 @@ public interface Register  extends Remote {
     
     public void printPlayers() throws RemoteException;
     
-    public int getCounter() throws RemoteException;
     
 }

@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/Users/soeur/Documents/NetBeansProjects/HitMyMonster/src/client/Player.java</file>
             <file>file:/C:/Users/soeur/Documents/NetBeansProjects/HitMyMonster/src/server/DisplaysMonsters.java</file>
+            <file>file:/C:/Users/soeur/Documents/NetBeansProjects/HitMyMonster/src/server/HitCatcher.java</file>
             <file>file:/C:/Users/soeur/Documents/NetBeansProjects/HitMyMonster/src/server/RegisterServer.java</file>
+            <file>file:/C:/Users/soeur/Documents/NetBeansProjects/HitMyMonster/src/server/MonsterServer.java</file>
         </group>
     </open-files>
 </project-private>
