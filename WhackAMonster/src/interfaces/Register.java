@@ -7,6 +7,7 @@ package interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import server.GameStatus;
 
 /**
  *
@@ -17,6 +18,8 @@ public interface Register  extends Remote {
     public String [] register(String nickname)  throws RemoteException;
     
     public void printPlayers() throws RemoteException;
+    
+    public GameStatus getBoard() throws RemoteException;
     
     
 }

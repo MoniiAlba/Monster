@@ -5,13 +5,14 @@
  */
 package server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author soeur
  */
-public class GameStatus {
+public class GameStatus implements Serializable{
     private ArrayList<User> players;
     private int round;
     private final int MAX_HITS = 5;  //5 hits para ganar
@@ -40,6 +41,10 @@ public class GameStatus {
             }
         }
         return null;
+    }
+    
+    public User getPlayerById(int id){
+        return this.players.get(id);
     }
     
     public int addPlayer(String nickname){

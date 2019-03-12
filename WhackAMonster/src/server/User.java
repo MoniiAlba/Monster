@@ -13,25 +13,35 @@ public class User {
     private int id;
     private String nickname;
     private int score;
+    private boolean active; 
 
     public User(int id, String nickname, int score) {
         this.id = id;
         this.nickname = nickname;
         this.score = score;
+        this.active = false;
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public String getNickname() {
-        return nickname;
+        return this.nickname;
     }
 
     public int getScore() {
-        return score;
+        return this.score;
     }
 
+    public boolean getActive(){
+        return this.active;
+    }
+    
+    public void setActive(boolean status){
+        this.active = status;
+    }
+    
     public void setId(int id) {
         this.id = id;
     }

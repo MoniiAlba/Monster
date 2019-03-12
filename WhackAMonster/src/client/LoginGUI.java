@@ -25,9 +25,11 @@ public class LoginGUI extends javax.swing.JFrame {
     /**
      * Creates new form LoginGUI
      */
-    public LoginGUI() {
+    public LoginGUI() throws RemoteException {
         initComponents();
+        jLabelError.setVisible(false);
         server = connectRMI();
+        
         
     }
 
@@ -43,7 +45,7 @@ public class LoginGUI extends javax.swing.JFrame {
             String name = "Register";
             Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address
             Register server = (Register) registry.lookup(name);
-            
+            this.board = server.getBoard();
             return server;
         }catch (RemoteException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
@@ -65,6 +67,7 @@ public class LoginGUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jTextNickname = new javax.swing.JTextField();
         jBtnOK = new javax.swing.JButton();
+        jLabelError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Whack A Monster");
@@ -82,6 +85,10 @@ public class LoginGUI extends javax.swing.JFrame {
             }
         });
 
+        jLabelError.setFont(new java.awt.Font("Segoe UI Light", 0, 10)); // NOI18N
+        jLabelError.setForeground(new java.awt.Color(255, 102, 51));
+        jLabelError.setText("Usuario ya está jugando");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,10 +97,6 @@ public class LoginGUI extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addComponent(jLabel2)
                 .addContainerGap(47, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jTextNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(79, 79, 79)
                 .addComponent(jLabel1)
@@ -101,6 +104,14 @@ public class LoginGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(114, 114, 114)
                 .addComponent(jBtnOK)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabelError)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -110,7 +121,9 @@ public class LoginGUI extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addGap(37, 37, 37)
+                .addGap(12, 12, 12)
+                .addComponent(jLabelError)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jBtnOK)
@@ -123,6 +136,23 @@ public class LoginGUI extends javax.swing.JFrame {
     private void jBtnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnOKActionPerformed
         String name = jTextNickname.getText();
         if(name != null){
+            try {
+                String[] connections = server.register(name);
+                System.out.println(connections[4]);
+                if(connections[4].equals("exists")){
+                    if(!this.board.getPlayerByName(name).getActive()){
+                        this.board.getPlayerByName(name).setActive(true);
+                    }else{
+                        jLabelError.setVisible(true);
+                    }
+                }
+                BoardGUI ventanita = new BoardGUI();
+                this.setVisible(false);
+                ventanita.setVisible(true);
+                
+            } catch (RemoteException ex) {
+                Logger.getLogger(LoginGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
         }
         
@@ -159,9 +189,13 @@ public class LoginGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                LoginGUI window = new LoginGUI();
-                window.setLocationRelativeTo(null);
-                window.setVisible(true);
+                try {
+                    LoginGUI window = new LoginGUI();
+                    window.setLocationRelativeTo(null);
+                    window.setVisible(true);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(LoginGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -170,6 +204,7 @@ public class LoginGUI extends javax.swing.JFrame {
     private javax.swing.JButton jBtnOK;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelError;
     private javax.swing.JTextField jTextNickname;
     // End of variables declaration//GEN-END:variables
 }
