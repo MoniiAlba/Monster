@@ -21,6 +21,8 @@ public class RegisterServer implements Register{
     private static int contUsers = 0;
     private User[] players = new User [20];
     private static int totalRounds = 5;
+    private static String multicastGroup = "228.15.26.37";
+    private static int multicastSocket = 7777;
         
     @Override
     public String[] register(String nickname)  throws RemoteException {
@@ -45,10 +47,12 @@ public class RegisterServer implements Register{
             
         }
         
-        result[0] = "228.15.26.37";  //direccion de grupo multicast
-        result[1] = "7777";         //socket multicast
-        result[2] = "7896";         //puerto tcp
+        result[0] = multicastGroup;  //direccion de grupo multicast
+        result[1] = multicastSocket + "";         //socket multicast
+        result[2] = "8896";         //puerto tcp
         result[4] = ""+totalRounds;
+        
+        System.out.println("Usuarios en register: "+contUsers);
         return result;
     }
     
@@ -79,19 +83,24 @@ public class RegisterServer implements Register{
             registry.rebind(name, stub); 
             System.out.println("Ready to register players");
             
-            Thread sendMonsters = new Thread(new DisplaysMonsters(totalRounds));
+            Thread sendMonsters = new Thread(new DisplaysMonsters(totalRounds, multicastGroup, multicastSocket));
             boolean playerFlag = true;
             int i = 0;
             while(playerFlag){
-                System.out.println("counter: "+contUsers);
+                //System.out.println("counter: "+contUsers);
+                System.out.println();
                 if(contUsers != 0){
                     System.out.println("SALTEEEE");
                     playerFlag = false;
                 }
                 i++;
             }
+            System.out.println("I will listen!");
+            Thread listenHits = new Thread(new HitCatcher());
+            listenHits.start();
             System.out.println("I will send!");
             sendMonsters.start();
+            
         }catch(RemoteException ex){
             Logger.getLogger(RegisterServer.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -21,8 +21,12 @@ import java.util.logging.Logger;
 public class DisplaysMonsters implements Runnable{
 
     private int totalRounds = 0;
-    public DisplaysMonsters(int rounds) {
+    private String multicastGroup = "";
+    private int socket = 0;
+    public DisplaysMonsters(int rounds, String multicast, int socket) {
         this.totalRounds = rounds;
+        this.multicastGroup = multicast;
+        this.socket = socket;
     }
     
 
@@ -31,10 +35,10 @@ public class DisplaysMonsters implements Runnable{
         MulticastSocket s = null;
         try {
 
-            InetAddress group = InetAddress.getByName("228.15.26.37"); // destination multicast group 
-            s = new MulticastSocket(7777);
+            InetAddress group = InetAddress.getByName(multicastGroup); // destination multicast group 
+            s = new MulticastSocket(socket);
             s.joinGroup(group);
-            Thread.sleep(6000);
+            Thread.sleep(2000);
             System.out.println("Starting sending");
             for(int i = 0; i < totalRounds; i++){
                 String myMessage = randomMonster();
@@ -42,7 +46,7 @@ public class DisplaysMonsters implements Runnable{
                 byte[] m = myMessage.getBytes();
                 DatagramPacket messageOut = new DatagramPacket(m, m.length, group, 7777);
                 s.send(messageOut);
-                Thread.sleep(2000);
+                Thread.sleep(6000);
             }
             
 
