@@ -62,7 +62,7 @@ public class MonsterListener implements Runnable{
                     int round = Integer.parseInt(message.split(",")[1]);
                     System.out.println("Hit Monster: " + monster + ", round: " + round);
                     window.changeColorButton(monster, round, Color.black);
-                    Thread.sleep(500);
+                    //Thread.sleep(500);
                     window.changeColorButton(monster, round, Color.red);
                 }
                                 
@@ -73,8 +73,7 @@ public class MonsterListener implements Runnable{
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("IO: " + e.getMessage());
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MonsterListener.class.getName()).log(Level.SEVERE, null, ex);
+        
         } finally {
             if (mS != null) {
                 mS.close();
