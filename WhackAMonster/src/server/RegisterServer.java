@@ -5,6 +5,7 @@
  */
 package server;
 
+import interfaces.User;
 import interfaces.Register;
 import java.rmi.RemoteException;
 
@@ -26,29 +27,29 @@ public class RegisterServer implements Register{
         this.tcpPort = tcp;
     }
     
-    public GameStatus getBoard() throws RemoteException{
-        return this.board;
+    public String getMGroup(){
+        return multicastGroup;
+    }
+    
+    public int getMSocket(){
+        return multicastSocket;
+    }
+    
+    public int getTSocket(){
+        return tcpPort;
     }
     
     @Override
-    public String[] register(String nickname) throws RemoteException {
-        String [] result = new String[5];  //regresamos ip, multicast socket, puerto tcp e id
+    public User register(String nickname) throws RemoteException {
         User player = this.board.getPlayerByName(nickname);
-        result[0] = this.multicastGroup;  //direccion de grupo multicast
-        result[1] = this.multicastSocket + "";         //socket multicast
-        result[2] = this.tcpPort + "";
         
         if(player != null){  //ya existía
             System.out.println("User " + nickname + " already exists, id: " + player.getId());
-            result[3] = player.getId() + "";
-            result[4] = "exists";
         }else{
-            int newId = this.board.addPlayer(nickname);
-            System.out.println("User " + nickname + " registered with id: " + newId);
-            result[4] = "new";
+            player = this.board.addPlayer(nickname);
+            System.out.println("User " + nickname + " registered with id: " + player.getId());
         }
-        
-        return result;
+        return player;
     }
     
     @Override
@@ -58,6 +59,13 @@ public class RegisterServer implements Register{
         System.out.println("Total de jugadores: " + contUsers);
         for(User player : this.board.getPlayers()){
             System.out.println("Player " + player.getNickname() + " with id " + player.getId() + "has score: " + player.getScore());
+        }
+    }
+
+    @Override
+    public void setActive(User player) throws RemoteException {
+        if(player != null){
+            this.board.getPlayers().get(player.getId()).setActive(true);
         }
     }
     

@@ -5,6 +5,7 @@
  */
 package server;
 
+import interfaces.User;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -47,10 +48,10 @@ public class GameStatus implements Serializable{
         return this.players.get(id);
     }
     
-    public int addPlayer(String nickname){
+    public User addPlayer(String nickname){
         User p = new User(getTotalPlayers(), nickname, 0);
         players.add(p);
-        return p.getId();
+        return p;
     }
     
     

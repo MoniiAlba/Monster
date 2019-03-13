@@ -13,6 +13,7 @@ import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.GameStatus;
+import interfaces.User;
 
 /**
  *
@@ -20,7 +21,6 @@ import server.GameStatus;
  */
 public class LoginGUI extends javax.swing.JFrame {
 
-    GameStatus board;
     Register server;
     /**
      * Creates new form LoginGUI
@@ -45,7 +45,6 @@ public class LoginGUI extends javax.swing.JFrame {
             String name = "Register";
             Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address
             Register server = (Register) registry.lookup(name);
-            this.board = server.getBoard();
             return server;
         }catch (RemoteException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
@@ -137,18 +136,17 @@ public class LoginGUI extends javax.swing.JFrame {
         String name = jTextNickname.getText();
         if(name != null){
             try {
-                String[] connections = server.register(name);
-                System.out.println(connections[4]);
-                if(connections[4].equals("exists")){
-                    if(!this.board.getPlayerByName(name).getActive()){
-                        this.board.getPlayerByName(name).setActive(true);
-                    }else{
-                        jLabelError.setVisible(true);
-                    }
+                User actualPlayer = server.register(name);
+                System.out.println(actualPlayer.getNickname());
+                if(actualPlayer!=null && !actualPlayer.getActive()){
+                    server.setActive(actualPlayer);
+                    BoardGUI ventanita = new BoardGUI(actualPlayer, server.getMGroup(), server.getMSocket(), server.getTSocket());
+                    this.setVisible(false);
+                    ventanita.setVisible(true);
+                }else{
+                    jLabelError.setVisible(true);
                 }
-                BoardGUI ventanita = new BoardGUI();
-                this.setVisible(false);
-                ventanita.setVisible(true);
+                
                 
             } catch (RemoteException ex) {
                 Logger.getLogger(LoginGUI.class.getName()).log(Level.SEVERE, null, ex);

@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server;
+package interfaces;
+
+import java.io.Serializable;
 
 /**
  *
  * @author soeur
  */
-public class User {
+public class User implements Serializable{
     private int id;
     private String nickname;
     private int score;

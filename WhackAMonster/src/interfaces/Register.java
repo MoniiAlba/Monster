@@ -15,11 +15,16 @@ import server.GameStatus;
  */
 public interface Register  extends Remote {
     
-    public String [] register(String nickname)  throws RemoteException;
+    public User register(String nickname)  throws RemoteException;
     
     public void printPlayers() throws RemoteException;
     
-    public GameStatus getBoard() throws RemoteException;
+    public void setActive(User player) throws RemoteException;
     
+    public String getMGroup() throws RemoteException;
+    
+    public int getMSocket() throws RemoteException;
+    
+    public int getTSocket() throws RemoteException;
     
 }

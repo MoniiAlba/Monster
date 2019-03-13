@@ -45,6 +45,15 @@ public class MonsterServer {
             registry.rebind(name, stub); 
             System.out.println("Ready to register players");
             
+            Thread sendMonsters = new Thread(new DisplaysMonsters(multicastGroup, multicastSocket));
+            System.out.println("I will listen!");
+            Thread listenHits = new Thread(new HitCatcher(tcpSocket));
+            listenHits.start();
+            System.out.println("I will send!");
+            sendMonsters.start();
+            
+            
+            
             
             
         }catch(RemoteException ex){
