@@ -48,28 +48,36 @@ public class DisplaysMonsters implements Runnable{
             Thread.sleep(2000);
             System.out.println("Starting sending");
             while(!gameEnded){
-                String myMessage = randomMonster() + "," + this.round;
-                System.out.println("Sent: "+myMessage);
-                byte[] m = myMessage.getBytes();
-                DatagramPacket messageOut = new DatagramPacket(m, m.length, group, 7777);
-                s.send(messageOut);
-                this.round++;
-                Thread.sleep(3000);
-                if(this.board.getWinner()!=null){
-                    gameEnded = true;
+                if (this.board.getWinner() != null) {
                     ArrayList<User> finalPlayers = board.getPlayers();
                     System.out.println("=========== GAME ENDED ===========");
+                    String winnerMessage = "";
                     System.out.println("Winner: " + this.board.getWinner().getNickname());
-                    myMessage = "Winner " + this.board.getWinner().getNickname();
-                    m = myMessage.getBytes();
-                    messageOut = new DatagramPacket(m, m.length, group, 7777);
+                    winnerMessage = "Winner," + this.board.getWinner().getNickname();
+                    byte[] wMessage = winnerMessage.getBytes();
+                    DatagramPacket messageOut = new DatagramPacket(wMessage, wMessage.length, group, socket);
                     s.send(messageOut);
-                    for(User p : finalPlayers){
+                    for (User p : finalPlayers) {
                         System.out.println("Nickname: " + p.getNickname() + ", score: " + p.getScore());
                     }
+                    System.out.println("==================================");
+                    Thread.sleep(3000);
+                    this.board.resetWinner();
+                }else{
+                    String myMessage = "";
+                    myMessage = randomMonster() + "," + this.round;
+                    System.out.println("Sent: " + myMessage);
+                    byte[] m = myMessage.getBytes();
+                    DatagramPacket messageOut = new DatagramPacket(m, m.length, group, socket);
+                    s.send(messageOut);
+                    this.round++;
+                    Thread.sleep(3000);
                 }
+                
+                
             }
             s.leaveGroup(group);
+            s.close();
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {

@@ -5,6 +5,7 @@
  */
 package client;
 
+import interfaces.User;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -20,6 +21,7 @@ public class MonsterListener implements Runnable{
     private boolean gameEnded;
     private String multicastGroup;
     private int multicastSocket;
+    private MulticastSocket mS;
     BoardGUI window;
 
     public MonsterListener(String multicastGroup, int multicastSocket, BoardGUI window) {
@@ -29,24 +31,27 @@ public class MonsterListener implements Runnable{
         this.window = window;
     }
     
-    
+    public void closeMS(){
+        this.mS.close();
+    }
     
     public void run(){
-        MulticastSocket s = null;
+        mS = null;
         try {
             InetAddress group = InetAddress.getByName(multicastGroup); // destination multicast group 
-            s = new MulticastSocket(multicastSocket);
-            s.joinGroup(group);
+            mS = new MulticastSocket(multicastSocket);
+            mS.joinGroup(group);
 
-            byte[] buffer = new byte[1000];
+            
             while(!gameEnded) {
+                byte[] buffer = new byte[1000];
                 System.out.println("Waiting for messages");
                 DatagramPacket messageIn = new DatagramPacket(buffer, buffer.length);
-                s.receive(messageIn);
+                mS.receive(messageIn);
                 String message = (new String(messageIn.getData())).trim();
                 if(message.contains("Winner")){
-                    gameEnded = true;
-                    WinnerGUI ventanita = new WinnerGUI(message.split("Winner ")[1]);
+                    String name = message.split(",")[1];
+                    WinnerGUI ventanita = new WinnerGUI(name);
                     ventanita.setLocationRelativeTo(null);
                     ventanita.setVisible(true);
                 }else{
@@ -58,14 +63,14 @@ public class MonsterListener implements Runnable{
                                 
             }
             
-            s.leaveGroup(group);
+            mS.leaveGroup(group);
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("IO: " + e.getMessage());
         } finally {
-            if (s != null) {
-                s.close();
+            if (mS != null) {
+                mS.close();
             }
         }
     

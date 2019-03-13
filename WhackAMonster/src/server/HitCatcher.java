@@ -53,9 +53,6 @@ public class HitCatcher implements Runnable{
                 int round = Integer.parseInt(data.split(",")[2]);
                 System.out.println("Hit received from user " + name + " from round " + round);
                 board.incrementScore(id, round);
-                if(board.getWinner() != null){
-                    gameEnded = true;
-                }
             }
             clientSocket.close();
         } catch (IOException e) {

@@ -38,6 +38,7 @@ public class RegisterServer implements Register{
     public int getTSocket(){
         return tcpPort;
     }
+
     
     @Override
     public User register(String nickname) throws RemoteException {
@@ -63,9 +64,9 @@ public class RegisterServer implements Register{
     }
 
     @Override
-    public void setActive(User player) throws RemoteException {
+    public void changeActive(User player, boolean status) throws RemoteException {
         if(player != null){
-            this.board.getPlayers().get(player.getId()).setActive(true);
+            this.board.getPlayers().get(player.getId()).setActive(status);
         }
     }
     

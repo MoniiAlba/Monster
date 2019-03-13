@@ -19,7 +19,7 @@ public interface Register  extends Remote {
     
     public void printPlayers() throws RemoteException;
     
-    public void setActive(User player) throws RemoteException;
+    public void changeActive(User player, boolean status) throws RemoteException;
     
     public String getMGroup() throws RemoteException;
     

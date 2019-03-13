@@ -35,6 +35,10 @@ public class GameStatus implements Serializable{
         return winner;
     }
     
+    public void resetWinner(){
+        winner = null;
+    }
+    
     public ArrayList<User> getPlayers(){
         return players;
     }
@@ -71,15 +75,11 @@ public class GameStatus implements Serializable{
             scores[round] = p;
             if(score == 5*MAX_HITS){
                 winner = p;
+                p.setScore(0);
             }                        
         }
         
     }
     
-    public void resetScores(){
-        for(User p : players){
-            p.setScore(0);
-        }
-    }
     
 }

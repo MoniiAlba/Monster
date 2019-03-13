@@ -133,13 +133,13 @@ public class LoginGUI extends javax.swing.JFrame {
 
     private void jBtnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnOKActionPerformed
         String name = jTextNickname.getText();
-        if(name != null){
+        if(!name.equals("")){
             try {
                 User actualPlayer = server.register(name);
                 System.out.println(actualPlayer.getNickname());
                 if(actualPlayer!=null && !actualPlayer.getActive()){
-                    server.setActive(actualPlayer);
-                    BoardGUI ventanita = new BoardGUI(actualPlayer, server.getMGroup(), server.getMSocket(), server.getTSocket());
+                    server.changeActive(actualPlayer,true);
+                    BoardGUI ventanita = new BoardGUI(actualPlayer, server.getMGroup(), server.getMSocket(), server.getTSocket(),server);
                     this.setVisible(false);
                     ventanita.setLocationRelativeTo(null);
                     ventanita.setVisible(true);

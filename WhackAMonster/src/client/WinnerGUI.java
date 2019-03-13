@@ -5,17 +5,23 @@
  */
 package client;
 
+import interfaces.User;
+import java.awt.event.WindowEvent;
+import java.net.MulticastSocket;
+
 /**
  *
  * @author soeur
  */
 public class WinnerGUI extends javax.swing.JFrame {
 
+    
     /**
      * Creates new form WinnerGUI
      */
     public WinnerGUI(String name) {
         initComponents();
+        System.out.println("NOMBRE " + name);
         jLabelWinner.setText("Ganador: "+name);
     }
 
@@ -29,52 +35,55 @@ public class WinnerGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabelWinner = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         jBtnOK = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabelWinner.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
+        jLabelWinner.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelWinner.setText(" ");
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Light", 0, 11)); // NOI18N
-        jLabel1.setText("¿Seguir jugando?");
-
         jBtnOK.setText("OK");
+        jBtnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnOKActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(157, 157, 157)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabelWinner, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
+                        .addGap(71, 71, 71)
+                        .addComponent(jLabelWinner, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(172, 172, 172)
                         .addComponent(jBtnOK)))
-                .addContainerGap(155, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(29, 29, 29)
                 .addComponent(jLabelWinner, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(jLabel1)
-                .addGap(35, 35, 35)
+                .addGap(53, 53, 53)
                 .addComponent(jBtnOK)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jBtnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnOKActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_jBtnOKActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnOK;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelWinner;
     // End of variables declaration//GEN-END:variables
 }
