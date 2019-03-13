@@ -15,16 +15,24 @@ import java.util.ArrayList;
  */
 public class GameStatus implements Serializable{
     private ArrayList<User> players;
-    private int round;
+    private User[] scores;
+    private User winner;
+    private int actualRound;
     private final int MAX_HITS = 5;  //5 hits para ganar
 
     public GameStatus() {
         players = new ArrayList();
-        round = 0;
+        scores = new User[100];
+        actualRound = 0;
+        winner = null;
     }
     
     public int getRound(){
-        return round;
+        return actualRound;
+    }
+    
+    public User getWinner(){
+        return winner;
     }
     
     public ArrayList<User> getPlayers(){
@@ -54,5 +62,24 @@ public class GameStatus implements Serializable{
         return p;
     }
     
+    public void incrementScore(int id, int round){
+        if(scores[0] == null){ //revisa que ningun usuario haya dado ya este round
+            User p = players.get(id);
+            int score = p.getScore() + 5;
+            System.out.println("New score for " + p.getNickname() + ": " + score);
+            p.setScore(score);
+            scores[round] = p;
+            if(score == 5*MAX_HITS){
+                winner = p;
+            }                        
+        }
+        
+    }
+    
+    public void resetScores(){
+        for(User p : players){
+            p.setScore(0);
+        }
+    }
     
 }

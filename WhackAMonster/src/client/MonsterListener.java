@@ -10,6 +10,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketException;
+import server.GameStatus;
 
 /**
  *
@@ -43,11 +44,20 @@ public class MonsterListener implements Runnable{
                 DatagramPacket messageIn = new DatagramPacket(buffer, buffer.length);
                 s.receive(messageIn);
                 String message = (new String(messageIn.getData())).trim();
-                int monster = Integer.parseInt(message.split(",")[0]);
-                int round = Integer.parseInt(message.split(",")[1]);
-                System.out.println("Hit Monster: " + monster + ", round: " + round);
-                window.changeColorButton(monster, round);
+                if(message.contains("Winner")){
+                    gameEnded = true;
+                    WinnerGUI ventanita = new WinnerGUI(message.split("Winner ")[1]);
+                    ventanita.setLocationRelativeTo(null);
+                    ventanita.setVisible(true);
+                }else{
+                    int monster = Integer.parseInt(message.split(",")[0]);
+                    int round = Integer.parseInt(message.split(",")[1]);
+                    System.out.println("Hit Monster: " + monster + ", round: " + round);
+                    window.changeColorButton(monster, round);
+                }
+                                
             }
+            
             s.leaveGroup(group);
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());

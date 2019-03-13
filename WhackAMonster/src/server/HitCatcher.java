@@ -17,11 +17,15 @@ import java.net.Socket;
  * @author soeur
  */
 public class HitCatcher implements Runnable{
-    
+    private GameStatus board;
     private int tcpPort;
+    private boolean gameEnded;
 
-    public HitCatcher(int tcpPort) {
+    public HitCatcher(int tcpPort, GameStatus b) {
         this.tcpPort = tcpPort;
+        this.board = b;
+        this.gameEnded = false;
+        
     }
     
     
@@ -33,22 +37,27 @@ public class HitCatcher implements Runnable{
             int serverPort = this.tcpPort;
             ServerSocket listenSocket = new ServerSocket(serverPort);
             System.out.println("================ Listening ==================");
-            while (true) {
+            Socket clientSocket = null;
+            while (!gameEnded) {
                 System.out.println("Waiting for hits...");
-                Socket clientSocket = listenSocket.accept();  // Listens for a connection to be made to this socket and accepts it. The method blocks until a connection is made. 
-                //Connection c = new Connection(clientSocket);
-                //c.run();
-                
+                clientSocket = listenSocket.accept();  // Listens for a connection to be made to this socket and accepts it. The method blocks until a connection is made. 
+                                
                 DataInputStream in;
-                DataOutputStream out;
                 client = clientSocket;
                 
                 in = new DataInputStream(client.getInputStream());
-                out = new DataOutputStream(client.getOutputStream());
                 
                 String data = in.readUTF();
-                System.out.println("Message received from: " + clientSocket.getRemoteSocketAddress() + " is " + data);
+                String name = data.split(",")[0];
+                int id = Integer.parseInt(data.split(",")[1]);
+                int round = Integer.parseInt(data.split(",")[2]);
+                System.out.println("Hit received from user " + name + " from round " + round);
+                board.incrementScore(id, round);
+                if(board.getWinner() != null){
+                    gameEnded = true;
+                }
             }
+            clientSocket.close();
         } catch (IOException e) {
             System.out.println("Listen :" + e.getMessage());
         } finally {

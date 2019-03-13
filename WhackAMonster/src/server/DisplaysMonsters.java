@@ -5,11 +5,13 @@
  */
 package server;
 
+import interfaces.User;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,14 +21,16 @@ import java.util.logging.Logger;
  * @author soeur
  */
 public class DisplaysMonsters implements Runnable{
+    private GameStatus board;
     private int round = 0;
     private String multicastGroup = "";
     private int socket = 0;
     private boolean gameEnded = false;
     
-    public DisplaysMonsters(String multicast, int socket) {
+    public DisplaysMonsters(GameStatus board, String multicast, int socket) {
         this.multicastGroup = multicast;
         this.socket = socket;
+        this.board = board;
     }
     
     public void setGameEnded(){
@@ -50,8 +54,20 @@ public class DisplaysMonsters implements Runnable{
                 DatagramPacket messageOut = new DatagramPacket(m, m.length, group, 7777);
                 s.send(messageOut);
                 this.round++;
-                Thread.sleep(6000);
-                
+                Thread.sleep(3000);
+                if(this.board.getWinner()!=null){
+                    gameEnded = true;
+                    ArrayList<User> finalPlayers = board.getPlayers();
+                    System.out.println("=========== GAME ENDED ===========");
+                    System.out.println("Winner: " + this.board.getWinner().getNickname());
+                    myMessage = "Winner " + this.board.getWinner().getNickname();
+                    m = myMessage.getBytes();
+                    messageOut = new DatagramPacket(m, m.length, group, 7777);
+                    s.send(messageOut);
+                    for(User p : finalPlayers){
+                        System.out.println("Nickname: " + p.getNickname() + ", score: " + p.getScore());
+                    }
+                }
             }
             s.leaveGroup(group);
         } catch (SocketException e) {
@@ -68,7 +84,7 @@ public class DisplaysMonsters implements Runnable{
     }
     
     public String randomMonster(){
-        return new Random().nextInt(10) + "";
+        return new Random().nextInt(9) + "";
     }
     
 }

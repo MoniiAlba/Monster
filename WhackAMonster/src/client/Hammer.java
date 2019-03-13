@@ -28,7 +28,7 @@ public class Hammer {
     
     
     
-    public void whack (String str) {
+    public void whack (int round) {
 
 	Socket s = null;
 	    try {
@@ -39,17 +39,9 @@ public class Hammer {
 		DataInputStream in = new DataInputStream( s.getInputStream());
 		DataOutputStream out =
 			new DataOutputStream( s.getOutputStream());
-		out.writeUTF(str);        	// UTF is a string encoding 
+		out.writeUTF(player.getNickname() + "," + player.getId() + "," + round);        	// UTF is a string encoding 
                 
-                //Ventana ventana = new Ventana();
-                //ventana.setVisible(true);
-                
-                //while (true) {
-                 //   System.out.println("");
-                //}
-                
-		//String data = in.readUTF();	      
-                //System.out.println("Received: "+ data) ;      
+                s.close();     
        	    } 
             catch (UnknownHostException e) {
 		System.out.println("Sock:"+e.getMessage()); 

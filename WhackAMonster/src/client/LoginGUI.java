@@ -30,7 +30,6 @@ public class LoginGUI extends javax.swing.JFrame {
         jLabelError.setVisible(false);
         server = connectRMI();
         
-        
     }
 
     
@@ -47,9 +46,9 @@ public class LoginGUI extends javax.swing.JFrame {
             Register server = (Register) registry.lookup(name);
             return server;
         }catch (RemoteException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NotBoundException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -142,6 +141,7 @@ public class LoginGUI extends javax.swing.JFrame {
                     server.setActive(actualPlayer);
                     BoardGUI ventanita = new BoardGUI(actualPlayer, server.getMGroup(), server.getMSocket(), server.getTSocket());
                     this.setVisible(false);
+                    ventanita.setLocationRelativeTo(null);
                     ventanita.setVisible(true);
                 }else{
                     jLabelError.setVisible(true);
