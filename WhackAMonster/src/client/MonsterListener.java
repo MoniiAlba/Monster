@@ -6,11 +6,14 @@
 package client;
 
 import interfaces.User;
+import java.awt.Color;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import server.GameStatus;
 
 /**
@@ -58,7 +61,9 @@ public class MonsterListener implements Runnable{
                     int monster = Integer.parseInt(message.split(",")[0]);
                     int round = Integer.parseInt(message.split(",")[1]);
                     System.out.println("Hit Monster: " + monster + ", round: " + round);
-                    window.changeColorButton(monster, round);
+                    window.changeColorButton(monster, round, Color.black);
+                    Thread.sleep(500);
+                    window.changeColorButton(monster, round, Color.red);
                 }
                                 
             }
@@ -68,6 +73,8 @@ public class MonsterListener implements Runnable{
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("IO: " + e.getMessage());
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MonsterListener.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (mS != null) {
                 mS.close();

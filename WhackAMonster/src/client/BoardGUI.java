@@ -8,12 +8,17 @@ package client;
 import interfaces.Register;
 import interfaces.User;
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,6 +48,8 @@ public class BoardGUI extends javax.swing.JFrame {
         this.monsterListener = new MonsterListener(multicastGroup, multicastSocket, this);
         Thread catchMonsters = new Thread(this.monsterListener);
         catchMonsters.start();
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        
         
     }
     
@@ -95,7 +102,7 @@ public class BoardGUI extends javax.swing.JFrame {
         jButton9.setBackground(Color.black);
     }
 
-    public void changeColorButton(int button, int round){
+    public void changeColorButton(int button, int round, Color c){
         jButton1.setBackground(Color.black);
         jButton2.setBackground(Color.black);
         jButton3.setBackground(Color.black);
@@ -111,35 +118,50 @@ public class BoardGUI extends javax.swing.JFrame {
         
         switch(button){
             case 0:
-                jButton1.setBackground(Color.red);
+                jButton1.setBackground(c);
                 break;
             case 1:
-                jButton2.setBackground(Color.red);
+                jButton2.setBackground(c);
                 break;
             case 2:
-                jButton3.setBackground(Color.red);
+                jButton3.setBackground(c);
                 break;
             case 3:
-                jButton4.setBackground(Color.red);
+                jButton4.setBackground(c);
                 break;
             case 4:
-                jButton5.setBackground(Color.red);
+                jButton5.setBackground(c);
                 break;
             case 5:
-                jButton6.setBackground(Color.red);
+                jButton6.setBackground(c);
                 break;
             case 6:
-                jButton7.setBackground(Color.red);
+                jButton7.setBackground(c);
                 break;
             case 7:
-                jButton8.setBackground(Color.red);
+                jButton8.setBackground(c);
                 break;
             case 8:
-                jButton9.setBackground(Color.red);
+                jButton9.setBackground(c);
                 break;
                 
         }
     }
+    
+    private void exit() {
+        try {
+            this.monsterListener.closeMS();
+            server.changeActive(cliente, false);
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        } catch (RemoteException ex) {
+            Logger.getLogger(BoardGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    
+
+    
     /**
      * 
      * This method is called from within the constructor to initialize the form.
@@ -369,13 +391,7 @@ public class BoardGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jBtnOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnOutActionPerformed
-        try{
-            this.monsterListener.closeMS();
-            server.changeActive(cliente,false);
-            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-        }catch(Exception e){
-            System.out.println(e);
-        }
+        exit();
     }//GEN-LAST:event_jBtnOutActionPerformed
 
 
@@ -392,4 +408,7 @@ public class BoardGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
+
+    
 }
+
