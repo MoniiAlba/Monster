@@ -65,6 +65,7 @@ public class Stresser {
         try {
             String path = System.getProperty("user.dir") + "/src/client/player.policy";
             System.setProperty("java.security.policy","file:"+path);
+            System.setProperty("sun.net.maxDatagramSockets","601");
             if (System.getSecurityManager() == null) {
                 System.setSecurityManager(new SecurityManager());
             }
@@ -104,7 +105,7 @@ public class Stresser {
     
     public static void main(String[] args) throws RemoteException {
         
-        for(int i = 0; i < 40; i++){
+        for(int i = 0; i < 220; i++){
             Stresser stress = new Stresser();
             stress.setName(stress.nameGenerator());
             User player = stress.getServer().register(stress.getName());

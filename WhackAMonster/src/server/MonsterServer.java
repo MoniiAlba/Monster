@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class MonsterServer {
     private static GameStatus board;
     private static int totalRounds = 5;
-    private static String multicastGroup = "228.15.26.37";
+    private static String multicastGroup = "228.5.6.10";
     private static int multicastSocket = 7777;
     private static int tcpSocket = 8896;
     

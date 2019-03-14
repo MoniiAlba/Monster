@@ -34,8 +34,8 @@ public class Hammer {
 	    try {
 	    	int serverPort = this.socket;
 	   	
-                s = new Socket("localhost", serverPort);    
-             //   s = new Socket("127.0.0.1", serverPort);    
+                //s = new Socket("localhost", serverPort);    
+                s = new Socket("148.205.36.40", serverPort);    
 		DataInputStream in = new DataInputStream( s.getInputStream());
 		DataOutputStream out =
 			new DataOutputStream( s.getOutputStream());
