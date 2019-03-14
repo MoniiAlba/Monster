@@ -42,8 +42,8 @@ public class LoginGUI extends javax.swing.JFrame {
             }
             
             String name = "Register";
-            Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address
-            //Registry registry = LocateRegistry.getRegistry("ip"); // server's ip address
+            //Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address
+            Registry registry = LocateRegistry.getRegistry("148.205.36.40"); // server's ip address
             Register server = (Register) registry.lookup(name);
             return server;
         }catch (RemoteException ex) {
