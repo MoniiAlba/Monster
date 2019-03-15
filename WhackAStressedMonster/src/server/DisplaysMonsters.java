@@ -47,7 +47,7 @@ public class DisplaysMonsters implements Runnable{
             s.joinGroup(group);
             //Thread.sleep(2000);
             System.out.println("Starting sending");
-            while(!gameEnded && this.round < 110){
+            while(!gameEnded && this.round < 55){
                 if (this.board.getWinner() != null) {
                     ArrayList<User> finalPlayers = board.getPlayers();
                     //System.out.println("=========== GAME ENDED ===========");
