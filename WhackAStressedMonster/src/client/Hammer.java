@@ -28,7 +28,7 @@ public class Hammer {
     
     
     
-    public void whack (int round) {
+    public void whack (int round, String startTime) {
 
 	Socket s = null;
 	    try {
@@ -39,7 +39,7 @@ public class Hammer {
 		DataInputStream in = new DataInputStream( s.getInputStream());
 		DataOutputStream out =
 			new DataOutputStream( s.getOutputStream());
-		out.writeUTF(player.getNickname() + "," + player.getId() + "," + round);        	// UTF is a string encoding 
+		out.writeUTF(player.getNickname() + "," + player.getId() + "," + round + "," + startTime);        	// UTF is a string encoding 
                 
                 s.close();     
        	    } 

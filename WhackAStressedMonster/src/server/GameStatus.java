@@ -22,7 +22,7 @@ public class GameStatus implements Serializable{
 
     public GameStatus() {
         players = new ArrayList();
-        scores = new User[100];
+        scores = new User[1000];
         actualRound = 0;
         winner = null;
     }

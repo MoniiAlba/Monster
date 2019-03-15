@@ -105,7 +105,9 @@ public class Stresser {
     
     public static void main(String[] args) throws RemoteException {
         
+
         for(int i = 0; i < 220; i++){
+
             Stresser stress = new Stresser();
             stress.setName(stress.nameGenerator());
             User player = stress.getServer().register(stress.getName());
