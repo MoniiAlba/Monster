@@ -2,12 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/soeur/Documents/NetBeansProjects/HitMyMonster/src/client/Player.java</file>
-            <file>file:/C:/Users/soeur/Documents/NetBeansProjects/HitMyMonster/src/server/DisplaysMonsters.java</file>
-            <file>file:/C:/Users/soeur/Documents/NetBeansProjects/HitMyMonster/src/server/HitCatcher.java</file>
-            <file>file:/C:/Users/soeur/Documents/NetBeansProjects/HitMyMonster/src/server/RegisterServer.java</file>
-            <file>file:/C:/Users/soeur/Documents/NetBeansProjects/HitMyMonster/src/server/MonsterServer.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

@@ -62,7 +62,7 @@ public class DisplaysMonsters implements Runnable{
                         //System.out.println("Nickname: " + p.getNickname() + ", score: " + p.getScore());
                     }
                     //System.out.println("==================================");
-                    Thread.sleep(2000);
+                    Thread.sleep(1500);
                     this.board.resetWinner();
                 }else{
                     String myMessage = "";
@@ -73,7 +73,7 @@ public class DisplaysMonsters implements Runnable{
                     DatagramPacket messageOut = new DatagramPacket(m, m.length, group, socket);
                     s.send(messageOut);
                     this.round++;
-                    Thread.sleep(2000);
+                    Thread.sleep(1500);
                 }
                 //System.out.println(this.round);
                 

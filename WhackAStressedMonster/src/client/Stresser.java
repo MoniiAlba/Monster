@@ -106,7 +106,7 @@ public class Stresser {
     public static void main(String[] args) throws RemoteException {
         
 
-        for(int i = 0; i < 50; i++){
+        for(int i = 0; i < 360; i++){
 
             Stresser stress = new Stresser();
             stress.setName(stress.nameGenerator());
