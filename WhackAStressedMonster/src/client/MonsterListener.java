@@ -54,25 +54,26 @@ public class MonsterListener implements Runnable{
                 byte[] buffer = new byte[1000];
                 //System.out.println("Waiting for messages");
                 DatagramPacket messageIn = new DatagramPacket(buffer, buffer.length);
-                mS.receive(messageIn);
+                mS.receive(messageIn);                
                 String message = (new String(messageIn.getData())).trim();
+                String [] received = message.split(",");
                 if(message.contains("Winner")){
-                    String name = message.split(",")[1];
+                    String name = received[1];
                     //System.out.println("===================================");
                     System.out.println("Winner: " + name);
                     //System.out.println("===================================");
                     
                 }else{
-                    int monster = Integer.parseInt(message.split(",")[0]);
-                    int round = Integer.parseInt(message.split(",")[1]);
+                    int monster = Integer.parseInt(received[0]);
+                    int round = Integer.parseInt(received[1]);
                     //System.out.println("Hit Monster: " + monster + ", round: " + round);
                     
                     Hammer answer = new Hammer(player, tcpSocket);
                     
-                    float correctHit = new Random().nextFloat();
-                    if(correctHit >= 0.3){
-                        answer.whack(round);
-                    }
+                    //float correctHit = new Random().nextFloat();
+                    //if(correctHit >= 0.3){
+                        answer.whack(round, received[2]);
+                    //}
                     
                 }
                                 

@@ -51,7 +51,7 @@ public class HitCatcher implements Runnable{
                 String name = data.split(",")[0];
                 int id = Integer.parseInt(data.split(",")[1]);
                 int round = Integer.parseInt(data.split(",")[2]);
-                //System.out.println("Hit received from user " + name + " from round " + round);
+                System.out.println("Hit received from user " + name + " from round " + round);
                 board.incrementScore(id, round);
             }
             clientSocket.close();

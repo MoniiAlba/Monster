@@ -53,7 +53,8 @@ public class DisplaysMonsters implements Runnable{
                     System.out.println("=========== GAME ENDED ===========");
                     String winnerMessage = "";
                     System.out.println("Winner: " + this.board.getWinner().getNickname());
-                    winnerMessage = "Winner," + this.board.getWinner().getNickname();
+                    float timeStart = System.currentTimeMillis();
+                    winnerMessage = "Winner," + this.board.getWinner().getNickname() +","+timeStart;
                     byte[] wMessage = winnerMessage.getBytes();
                     DatagramPacket messageOut = new DatagramPacket(wMessage, wMessage.length, group, socket);
                     s.send(messageOut);
@@ -65,7 +66,8 @@ public class DisplaysMonsters implements Runnable{
                     this.board.resetWinner();
                 }else{
                     String myMessage = "";
-                    myMessage = randomMonster() + "," + this.round;
+                    float timeStart = System.currentTimeMillis();
+                    myMessage = randomMonster() + "," + this.round + "," + timeStart;
                     System.out.println("Sent: " + myMessage);
                     byte[] m = myMessage.getBytes();
                     DatagramPacket messageOut = new DatagramPacket(m, m.length, group, socket);
