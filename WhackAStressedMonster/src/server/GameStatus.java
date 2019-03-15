@@ -70,7 +70,7 @@ public class GameStatus implements Serializable{
         if(scores[round] == null){ //revisa que ningun usuario haya dado ya este round
             User p = players.get(id);
             int score = p.getScore() + 5;
-            System.out.println("New score for " + p.getNickname() + ": " + score);
+            //System.out.println("New score for " + p.getNickname() + ": " + score);
             p.setScore(score);
             scores[round] = p;
             if(score == 5*MAX_HITS){

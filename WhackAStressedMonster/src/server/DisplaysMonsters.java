@@ -47,38 +47,39 @@ public class DisplaysMonsters implements Runnable{
             s.joinGroup(group);
             //Thread.sleep(2000);
             System.out.println("Starting sending");
-            while(!gameEnded){
+            while(!gameEnded && this.round < 110){
                 if (this.board.getWinner() != null) {
                     ArrayList<User> finalPlayers = board.getPlayers();
-                    System.out.println("=========== GAME ENDED ===========");
+                    //System.out.println("=========== GAME ENDED ===========");
                     String winnerMessage = "";
-                    System.out.println("Winner: " + this.board.getWinner().getNickname());
-                    float timeStart = System.currentTimeMillis();
+                    //System.out.println("Winner: " + this.board.getWinner().getNickname());
+                    long timeStart = System.currentTimeMillis();
                     winnerMessage = "Winner," + this.board.getWinner().getNickname() +","+timeStart;
                     byte[] wMessage = winnerMessage.getBytes();
                     DatagramPacket messageOut = new DatagramPacket(wMessage, wMessage.length, group, socket);
                     s.send(messageOut);
                     for (User p : finalPlayers) {
-                        System.out.println("Nickname: " + p.getNickname() + ", score: " + p.getScore());
+                        //System.out.println("Nickname: " + p.getNickname() + ", score: " + p.getScore());
                     }
-                    System.out.println("==================================");
+                    //System.out.println("==================================");
                     Thread.sleep(1000);
                     this.board.resetWinner();
                 }else{
                     String myMessage = "";
-                    float timeStart = System.currentTimeMillis();
+                    long timeStart = System.currentTimeMillis();
                     myMessage = randomMonster() + "," + this.round + "," + timeStart;
-                    System.out.println("Sent: " + myMessage);
+                    //System.out.println("Sent: " + myMessage);
                     byte[] m = myMessage.getBytes();
                     DatagramPacket messageOut = new DatagramPacket(m, m.length, group, socket);
                     s.send(messageOut);
                     this.round++;
                     Thread.sleep(1000);
                 }
-                
+                System.out.println(this.round);
                 
             }
             s.leaveGroup(group);
+            
             s.close();
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());

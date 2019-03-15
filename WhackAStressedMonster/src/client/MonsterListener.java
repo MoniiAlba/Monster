@@ -60,7 +60,7 @@ public class MonsterListener implements Runnable{
                 if(message.contains("Winner")){
                     String name = received[1];
                     //System.out.println("===================================");
-                    System.out.println("Winner: " + name);
+                    //System.out.println("Winner: " + name);
                     //System.out.println("===================================");
                     
                 }else{
