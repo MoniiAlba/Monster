@@ -43,13 +43,13 @@ public class MonsterServer {
             
             Registry registry = LocateRegistry.getRegistry();
             registry.rebind(name, stub); 
-            System.out.println("Ready to register players");
+            //System.out.println("Ready to register players");
             
             Thread sendMonsters = new Thread(new DisplaysMonsters(board,multicastGroup, multicastSocket));
-            System.out.println("I will listen!");
+            //System.out.println("I will listen!");
             Thread listenHits = new Thread(new HitCatcher(tcpSocket, board));
             listenHits.start();
-            System.out.println("I will send!");
+            //System.out.println("I will send!");
             sendMonsters.start();
             
             

@@ -55,10 +55,10 @@ public class RegisterServer implements Register{
         User player = this.board.getPlayerByName(nickname);
         
         if(player != null){  //ya existía
-            System.out.println("User " + nickname + " already exists, id: " + player.getId());
+            //System.out.println("User " + nickname + " already exists, id: " + player.getId());
         }else{
             player = this.board.addPlayer(nickname);
-            System.out.println("User " + nickname + " registered with id: " + player.getId());
+            //System.out.println("User " + nickname + " registered with id: " + player.getId());
         }
         return player;
     }

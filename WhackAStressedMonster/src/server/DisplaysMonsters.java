@@ -46,15 +46,15 @@ public class DisplaysMonsters implements Runnable{
             s = new MulticastSocket(socket);
             s.joinGroup(group);
             //Thread.sleep(2000);
-            System.out.println("Starting sending");
+            //System.out.println("Starting sending");
             while(!gameEnded && this.round < 55){
                 if (this.board.getWinner() != null) {
                     ArrayList<User> finalPlayers = board.getPlayers();
                     //System.out.println("=========== GAME ENDED ===========");
                     String winnerMessage = "";
                     //System.out.println("Winner: " + this.board.getWinner().getNickname());
-                    long timeStart = System.currentTimeMillis();
-                    winnerMessage = "Winner," + this.board.getWinner().getNickname() +","+timeStart;
+                    
+                    winnerMessage = "Winner," + this.board.getWinner().getNickname();
                     byte[] wMessage = winnerMessage.getBytes();
                     DatagramPacket messageOut = new DatagramPacket(wMessage, wMessage.length, group, socket);
                     s.send(messageOut);
@@ -62,7 +62,7 @@ public class DisplaysMonsters implements Runnable{
                         //System.out.println("Nickname: " + p.getNickname() + ", score: " + p.getScore());
                     }
                     //System.out.println("==================================");
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                     this.board.resetWinner();
                 }else{
                     String myMessage = "";
@@ -73,11 +73,12 @@ public class DisplaysMonsters implements Runnable{
                     DatagramPacket messageOut = new DatagramPacket(m, m.length, group, socket);
                     s.send(messageOut);
                     this.round++;
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 }
-                System.out.println(this.round);
+                //System.out.println(this.round);
                 
             }
+            System.out.println("FIN");
             s.leaveGroup(group);
             
             s.close();

@@ -42,7 +42,7 @@ public class HitCatcher implements Runnable{
             ServerSocket listenSocket = new ServerSocket(serverPort);
             //System.out.println("================ Listening ==================");
             Socket clientSocket = null;
-            file = new FileWriter("time.csv");
+            file = new FileWriter("time.txt");
             pw = new PrintWriter(file);
             while (!gameEnded) {
                 //System.out.println("Waiting for hits...");
@@ -64,9 +64,9 @@ public class HitCatcher implements Runnable{
                 long endTime = System.currentTimeMillis();
                 //System.out.println("End: " + endTime);
                 long totalTime = endTime - Long.parseLong(data.split(",")[3]); 
-                //System.out.println("Total: " + totalTime);
+                System.out.println(totalTime);
                 //System.out.println(totalTime);
-                
+                //System.out.println();
                 pw.print(totalTime + "\n");
                 
             }
